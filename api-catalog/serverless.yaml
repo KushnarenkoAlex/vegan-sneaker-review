@@ -14,11 +14,8 @@ functions:
     handler: dist/serverless.handler
     events:
       - http:
-          method: ANY
-          path: /
-      - http:
-          method: ANY
-          path: '{proxy+}'
+          method: any
+          path: /{any+}
 custom:
   optimize:
     external: ['swagger-ui-dist']
