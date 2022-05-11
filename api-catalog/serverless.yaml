@@ -1,0 +1,24 @@
+service: api-catalog
+
+plugins:
+  - serverless-offline
+  - serverless-plugin-optimize
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, 'dev'}
+
+functions:
+  main:
+    handler: dist/serverless.handler
+    events:
+      - http:
+          method: ANY
+          path: /
+      - http:
+          method: ANY
+          path: '{proxy+}'
+custom:
+  optimize:
+    external: ['swagger-ui-dist']
