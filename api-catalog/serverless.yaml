@@ -18,4 +18,6 @@ functions:
           path: /{any+}
 custom:
   optimize:
+    externalPaths:
+      swagger-ui-dist: 'node_modules/swagger-ui-dist'
     external: ['swagger-ui-dist']
