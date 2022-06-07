@@ -4,10 +4,26 @@ plugins:
   - serverless-offline
   - serverless-plugin-optimize
 
+custom:
+  optimize:
+    externalPaths:
+      swagger-ui-dist: 'node_modules/swagger-ui-dist'
+    external: ['swagger-ui-dist']
+  productsTable:
+    name: ${self:provider.stage}-products
+    arn: !GetAtt productsTable.Arn
+
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: ${opt:stage, 'dev'}
+  stage: dev
+  environment:
+    PRODUCTS_TABLE_NAME: ${self:provider.stage}-products
+  iamRoleStatements: ${file(./iam/productsTableIAM.yml)}
+
+resources:
+  Resources:
+    productsTable: ${file(./resources/productsTable.yml):productsTable}
 
 functions:
   main:
@@ -16,8 +32,3 @@ functions:
       - http:
           method: any
           path: /{any+}
-custom:
-  optimize:
-    externalPaths:
-      swagger-ui-dist: 'node_modules/swagger-ui-dist'
-    external: ['swagger-ui-dist']
